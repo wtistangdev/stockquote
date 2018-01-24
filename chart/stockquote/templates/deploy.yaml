@@ -31,7 +31,7 @@ spec:
       containers:
       - name: "{{  .Chart.Name  }}"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         env:
           - name: REDIS_URL
             valueFrom:
@@ -55,10 +55,10 @@ metadata:
     app: stock-quote
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
-  type: {{ .Values.service.type }}
+  type: "{{ .Values.service.type }}{
   ports:
-    - port: {{ .Values.service.servicePort }}
-      nodePort: {{ .Values.service.nodePort }}
+    - port: "{{ .Values.service.servicePort }}"
+      nodePort: "{{ .Values.service.nodePort }}"
   selector:
     app: "{{  .Chart.Name }}-selector"
 ---   
