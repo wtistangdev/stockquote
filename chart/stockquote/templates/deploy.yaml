@@ -16,22 +16,17 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{  .Chart.Name }}-deployment"
-  labels:
-    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+  name: stock-quote
 spec:
-  replicas: "{{ .Values.replicaCount }}"
-  revisionHistoryLimit: "{{ .Values.revisionHistoryLimit }}"
+  replicas: 1
   template:
     metadata:
       labels:
-        app: "{{  .Chart.Name }}-selector"
-        version: "current"
+        app: stock-quote
     spec:
       containers:
-      - name: "{{  .Chart.Name  }}"
+      - name: stock-quote
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: "{{ .Values.image.pullPolicy }}"
         env:
           - name: REDIS_URL
             valueFrom:
@@ -45,6 +40,7 @@ spec:
                 key: quandl-key
         ports:
           - containerPort: 9080
+        imagePullPolicy: Always
 ---
 #Deploy the service
 apiVersion: v1
@@ -53,14 +49,13 @@ metadata:
   name: stock-quote-service
   labels:
     app: stock-quote
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 spec:
-  type: "{{ .Values.service.type }}{
+  type: NodePort
   ports:
-    - port: "{{ .Values.service.servicePort }}"
-      nodePort: "{{ .Values.service.nodePort }}"
+    - port: 9080
+      nodePort: 31002
   selector:
-    app: "{{  .Chart.Name }}-selector"
+    app: stock-quote
 ---   
 #Configure the ingress 
 apiVersion: extensions/v1beta1
