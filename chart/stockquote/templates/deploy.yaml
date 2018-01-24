@@ -20,8 +20,8 @@ metadata:
   labels:
     chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
 spec:
-  replicas: {{ .Values.replicaCount }}
-  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  replicas: "{{ .Values.replicaCount }}"
+  revisionHistoryLimit: "{{ .Values.revisionHistoryLimit }}"
   template:
     metadata:
       labels:
