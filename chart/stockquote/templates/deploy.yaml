@@ -45,7 +45,7 @@ spec:
                 key: quandl-key
         ports:
           - containerPort: 9080
- ---
+---
 #Deploy the service
 apiVersion: v1
 kind: Service
